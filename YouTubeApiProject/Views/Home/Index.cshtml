@@ -1,0 +1,22 @@
+﻿@{
+    ViewData["Title"] = "Home";
+}
+
+<div class="container text-center mt-5">
+    <h1>Welcome to YouTube API Music Search</h1>
+
+    <p class="mt-3">
+        <strong>What is an API?</strong> <br />
+        An API (Application Programming Interface) allows different applications to communicate with each other. In this case, we are using YouTube's API to fetch videos based on your search queries.
+    </p>
+
+    <p class="mt-3">
+        <strong>About This Application</strong> <br />
+        This application enables users to search for music videos using YouTube's API. You can apply filters like upload date and video duration to refine your results.
+    </p>
+
+    <div class="mt-4">
+        <h2>Try it here!</h2>
+        <a asp-controller="YouTube" asp-action="Index" class="btn btn-primary btn-lg">Search Music</a>
+    </div>
+</div>

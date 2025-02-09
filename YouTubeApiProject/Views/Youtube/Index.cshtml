@@ -1,0 +1,90 @@
+﻿@model YouTubeApiProject.Models.Pagination<YouTubeApiProject.Models.YouTubeVideoModel>
+
+<h2>YouTube Video Search</h2>
+
+<form asp-action="Search" method="post" class="mb-3">
+    <div class="input-group">
+        <input type="text" name="query" class="form-control" placeholder="Search videos..." required />
+
+        <!-- Dropdown Toggle Button -->
+        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Filters
+        </button>
+
+        <!-- Dropdown Menu -->
+        <ul class="dropdown-menu p-3">
+            <!-- Upload Date Filter -->
+            <li>
+                <label for="uploadDate" class="form-label">Upload Date:</label>
+                <select name="uploadDate" class="form-select">
+                    <option value="">Anytime</option>
+                    <option value="today">Today</option>
+                    <option value="week">This Week</option>
+                    <option value="month">This Month</option>
+                    <option value="year">This Year</option>
+                </select>
+            </li>
+
+            <li><hr class="dropdown-divider"></li> <!-- Separator -->
+            <!-- Video Duration Filter -->
+            <li>
+                <label for="videoDuration" class="form-label">Video Duration:</label>
+                <select name="videoDuration" class="form-select">
+                    <option value="">Any Length</option>
+                    <option value="short">Short (< 4 min)</option>
+                    <option value="medium">Medium (4-20 min)</option>
+                    <option value="long">Long (> 20 min)</option>
+                </select>
+            </li>
+        </ul>
+
+        <!-- Search Button -->
+        <button type="submit" class="btn btn-primary">Search</button>
+    </div>
+</form>
+
+@if (Model.Items != null && Model.Items.Count > 0)
+{
+    <div class="row">
+        @foreach (var video in Model.Items)
+        {
+            <div class="col-md-4 mb-3">
+                <a href="@video.VideoUrl" target="_blank" class="text-decoration-none text-dark">
+                    <div class="card h-100">
+                        <img src="@video.ThumbnailUrl" class="card-img-top" alt="@video.Title">
+                        <div class="card-body">
+                            <h5 class="card-title">@Html.Raw(video.Title)</h5>
+                            <p class="card-text">@video.Description</p>
+                            <!-- Channel Info -->
+                            <div class="d-flex align-items-center">
+                                <img src="@video.ChannelProfileUrl" alt="@video.ChannelName" class="rounded-circle" width="40" height="40">
+                                <span class="ml-2">@video.ChannelName</span>
+                            </div>
+                            <p class="card-text"><small class="text-muted">Published on: @video.PublishedDate</small></p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        }
+    </div>
+
+    <!-- Pagination Controls -->
+    <div class="pagination-container text-center mt-3 mb-5 pb-5">
+        @if (Model.HasPreviousPage)
+        {
+            <a asp-action="PaginatedIndex" asp-route-page="@(Model.CurrentPage - 1)" class="btn btn-primary">Previous</a>
+        }
+
+        <span class="mx-2"> Page @Model.CurrentPage of @Model.TotalPages </span>
+
+        @if (Model.HasNextPage)
+        {
+            <a asp-action="PaginatedIndex" asp-route-page="@(Model.CurrentPage + 1)" class="btn btn-primary">Next</a>
+        }
+    </div>
+
+}
+else
+{
+    <p>No videos found. Try searching for something else.</p>
+}
